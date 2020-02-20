@@ -1,0 +1,75 @@
+---
+title: "join_3_vars"
+author: "Alex Schaefer"
+date: "2/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+ellenlink = "https://raw.githubusercontent.com/amschae-uw/ellenswork/master/Composite_Score_Ranking_data.csv"
+ellendata<- read.csv(ellenlink)
+
+roselink = "https://raw.githubusercontent.com/amschae-uw/maternalhealth/master/maternal_health_americashealthrankings_21Jan20.csv"
+rosedata<- read.csv(roselink)
+
+alexlink = "https://raw.githubusercontent.com/amschae-uw/visualanalytics/master/gini_index.csv"
+alexdata <- read.csv(alexlink)
+
+regionlink = "https://raw.githubusercontent.com/rslav/census-regions/master/us%20census%20bureau%20regions%20and%20divisions.csv"
+regiondata <- read.csv(regionlink)
+
+
+```
+
+```{r}
+ellenrose <- merge(ellendata, rosedata)
+
+eardata <- merge(ellenrose, alexdata)
+
+eardata <- merge(eardata, regiondata)
+
+eardata
+
+names(eardata)
+
+# DROP C 17
+eardata <- eardata[ -c(17) ]
+
+# SAY NEW NAMES IN ORDER
+newnames <- c("State", "Abbrev", "AttorneyAccess", "JusticeIndex", "DisabilityAccess", "LanguageAccess", "SelfRepresented", "Obesity", "Inactivity", "TobaccoDuringPregnancy", "WomensHealthServices", "PrematureBirths", "TeenBirths", "GiniRank", "Gini", "GiniGroup", "Region", "Division")
+
+#RENAME
+names(eardata)= newnames
+
+summ(eardata)
+
+write.csv(eardata, file ="aerdata.csv")
+
+summary(eardata$TeenBirths)
+```
+
+
+```{r}
+require(reshape2)
+
+#Convert wide to long
+melt.data <- subset(eardata, select = -c(GiniRank) )
+
+melt.data <- melt(melt.data)
+
+head(melt.data)
+ggplot(data = melt.data, aes(x = value)) + 
+stat_density() + 
+facet_wrap(~variable, scales = "free")
+```
+
+
+```{r}
+#too much to do them all
+#pairs(eardata)
+
+pairs(~ JusticeIndex + TeenBirths + Gini, data = eardata) 
+
+```
+
