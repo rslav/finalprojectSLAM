@@ -1,7 +1,7 @@
 ---
-title: "join_3_vars"
-author: "Alex Schaefer"
-date: "2/6/2020"
+title: "join_3_vars_createPHI"
+author: "Alex Schaefer_Rose Slavkovsky"
+date: "2/23/2020"
 output: html_document
 ---
 
@@ -37,16 +37,29 @@ names(eardata)
 eardata <- eardata[ -c(17) ]
 
 # SAY NEW NAMES IN ORDER
-newnames <- c("State", "Abbrev", "AttorneyAccess", "JusticeIndex", "DisabilityAccess", "LanguageAccess", "SelfRepresented", "Obesity", "Inactivity", "TobaccoDuringPregnancy", "WomensHealthServices", "PrematureBirths", "TeenBirths", "GiniRank", "Gini", "GiniGroup", "Region", "Division")
+newnames <- c("State", "Abbrev", "AttorneyAccess", "JusticeIndex", "DisabilityAccess", "LanguageAccess", "SelfRepresented", "Obesity", "Inactivity", "TobaccoDuringPregnancy", "WomensHealthServices", "PrenatalCarePreThirdTrimester", "TeenBirths", "GiniRank", "Gini", "GiniGroup", "Region", "Division")
 
 #RENAME
 names(eardata)= newnames
 
-summ(eardata)
+summary(eardata)
 
-write.csv(eardata, file ="aerdata.csv")
+#CREATE PREGNANCY HEALTH INDEX (PHI)
 
-summary(eardata$TeenBirths)
+eardata$TeenBirthsDecimal <- (eardata$TeenBirths)/100 
+
+summary(eardata)
+
+eardata$PHI <- ((eardata$WomensHealthServices)+(eardata$PrenatalCarePreThirdTrimester)-(eardata$TobaccoDuringPregnancy)-(eardata$TeenBirthsDecimal))/4
+
+eardata$PHI
+
+summary(eardata$PHI)
+
+```
+```{r}
+#SAVE DATA AS CSV
+write.csv(eardata, file ="eardata.csv")
 ```
 
 
@@ -72,4 +85,3 @@ facet_wrap(~variable, scales = "free")
 pairs(~ JusticeIndex + TeenBirths + Gini, data = eardata) 
 
 ```
-
