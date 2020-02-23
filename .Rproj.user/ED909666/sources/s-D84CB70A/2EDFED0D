@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582488971713.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "2EDFED0D",
+    "lastKnownWriteTime" : 1582490252,
+    "last_content_update" : 1582490252608,
+    "path" : "~/Documents/GitHub/finalprojectSLAM/Choropleth_examples.Rmd",
+    "project_path" : "Choropleth_examples.Rmd",
+    "properties" : {
+        "cursorPosition" : "9,0",
+        "scrollLine" : "1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

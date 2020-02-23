@@ -1,0 +1,51 @@
+FedDepRank,State,DependencyScore,ResDepRank ,GovtDepRank 
+1,New Mexico,85.81,2,3
+2,Mississippi,81.46,7,1
+3,Kentucky,78.76,6,5
+4,West Virginia,72.34,4,12
+5,Alabama,71.65,5,11
+6,Arizona,67.03,11,4
+7,Alaska,64.3,8,9
+8,Montana,63.88,15,6
+9,South Carolina,61.31,3,33
+10,Indiana,59.74,9,14
+11,Louisiana,58.11,27,2
+12,Tennessee,52.21,21,7
+13,Maine,50.89,12,19
+14,Wyoming,50.39,22,8
+15,North Dakota,46.99,1,47
+16,Vermont,46.46,18,17
+17,Oklahoma,44.24,19,21
+18,Missouri,43.76,36,10
+19,Oregon,43.44,25,15
+20,Pennsylvania,42.94,17,28
+21,Maryland,41.38,14,37
+22,Arkansas,40.78,40,13
+23,Idaho,40.69,20,27
+24,South Dakota,39.94,24,20
+25,Florida,37.96,26,24
+26,Georgia,37.58,32,18
+27,Michigan,37.33,28,23
+28,Ohio,35.34,46,16
+29,Texas,34.27,42,25
+30,Rhode Island,33.88,39,26
+31,New York,33.05,45,22
+32,New Hampshire,31.58,38,30
+33,Iowa,31.21,31,31
+34,Nevada,31.14,30,32
+35,California,30.57,43,29
+36,Wisconsin,29.57,16,45
+37,North Carolina,29.46,33,34
+38,Colorado,28.94,34,35
+39,Washington,27.88,37,38
+40,Hawaii,26.93,10,49
+41,Connecticut,26.67,23,42
+42,Nebraska,25.45,44,36
+43,Virginia,20.76,13,50
+44,Massachusetts,20.64,47,39
+45,Minnesota,20.12,34,44
+46,Illinois,19.92,48,40
+47,Utah,18.56,29,46
+48,New Jersey,17.67,49,41
+49,Delaware,14.44,50,43
+50,Kansas,10.7,41,48

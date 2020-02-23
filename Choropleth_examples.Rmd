@@ -1,0 +1,28 @@
+---
+title: "choropleth_examples"
+author: "Alex Schaefer"
+date: "2/23/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+read.csv(dependencydata.csv)
+
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+```{r}
+```
+
