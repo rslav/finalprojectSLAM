@@ -5,13 +5,45 @@ date: "2/23/2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-read.csv(dependencydata.csv)
+```{r}
+
+library(usmap)
+library(ggplot2)
+library(ggpubr)
+
+data<-read.csv("/Users/Alex/Documents/GitHub/finalprojectSLAM/eardata.csv")
+
+colnames(data)[2] <- "state"
+
+ginimap<-plot_usmap(data = data, values = "Gini", color = "gray") + 
+  theme(legend.position = "right") + 
+  scale_fill_continuous(low = "white", high = "black", name = "Gini")+ 
+  theme(legend.position = "right")
+
+justicemap<- plot_usmap(data = data, values = "JusticeIndex", color = "gray") + 
+  theme(legend.position = "right") + 
+  scale_fill_continuous(low = "white", high = "black", name = "Justice")+ 
+  theme(legend.position = "right")
+
+phimap<- plot_usmap(data = data, values = "PHI", color = "gray") + 
+  theme(legend.position = "right") + 
+  scale_fill_continuous(low = "white", high = "black", name = "Pregnancy Health")+ 
+  theme(legend.position = "right")
+
+depmap<-plot_usmap(data = data, values = "DependencyScore", color = "gray") + 
+  theme(legend.position = "right") + 
+  scale_fill_continuous(low = "white", high = "black", name = "Federal Dependency")+ 
+  theme(legend.position = "right")
+
 
 ```
 
 
 ```{r}
+
+ggarrange(ginimap, justicemap, phimap,depmap, ncol=1, nrow=4)
+
+
 ```
 
 

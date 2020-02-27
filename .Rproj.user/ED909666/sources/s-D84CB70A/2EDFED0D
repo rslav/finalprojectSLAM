@@ -7,13 +7,13 @@
     "folds" : "",
     "hash" : "0",
     "id" : "2EDFED0D",
-    "lastKnownWriteTime" : 1582490252,
-    "last_content_update" : 1582490252608,
+    "lastKnownWriteTime" : 1582765443,
+    "last_content_update" : 1582765443970,
     "path" : "~/Documents/GitHub/finalprojectSLAM/Choropleth_examples.Rmd",
     "project_path" : "Choropleth_examples.Rmd",
     "properties" : {
-        "cursorPosition" : "9,0",
-        "scrollLine" : "1"
+        "cursorPosition" : "6,0",
+        "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [

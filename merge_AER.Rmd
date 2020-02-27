@@ -58,8 +58,9 @@ summary(eardata$PHI)
 
 dependencydata <- read.csv("/Users/Alex/Documents/GitHub/finalprojectSLAM/dependencydata.csv")
 
-eardata <- merge(dependencydata)
+eardata <- merge(eardata,dependencydata)
 
+eardata
 ```
 
 ```{r}
