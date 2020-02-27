@@ -1,0 +1,35 @@
+Ellen's Justice Index Cluster Analysis
+
+Data preparation. Note, I am only using the justice index data opposed to our master merge:
+```{r}
+# Load data
+ellenlink = "https://raw.githubusercontent.com/amschae-uw/ellenswork/master/Composite_Score_Ranking_data.csv"
+ellendata<- read.csv(ellenlink)
+
+data("ellendata")
+my_data <- ellendata
+# Remove any missing value (i.e, NA values for not available)
+my_data <- na.omit(my_data)
+
+#note, I removed the scaling code; not needed here bc data is already scaled
+
+# View the first 5 rows
+head(my_data, n = 5)
+
+```
+
+Determine the optimal number of clusters for k-means clustering:
+```{r}
+library("factoextra")
+```
+
+You can compute and visualize PAM clustering as follow:
+```{r}
+# Compute PAM
+library(cluster)
+pam.res <- pam(my_data, 4)
+# Visualize
+fviz_cluster(pam.res)
+
+```
+

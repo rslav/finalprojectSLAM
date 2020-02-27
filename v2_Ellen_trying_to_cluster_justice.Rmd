@@ -1,0 +1,69 @@
+Ellen's Cluster Analysis
+
+Data preparation. Note, I am only using the justice index data opposed to our master merge:
+```{r}
+# Load data
+eardatalink = "https://raw.githubusercontent.com/rslav/finalprojectSLAM/master/eardata.csv"
+eardata<- read.csv(eardatalink)
+
+data("eardata")
+my_data <- eardata
+# Remove any missing value (i.e, NA values for not available)
+my_data <- na.omit(my_data)
+
+#note, I removed the scaling code; not needed here bc data is already scaled
+
+# View the first 5 rows
+head(my_data, n = 5)
+
+```
+
+Determine the optimal number of clusters for k-means clustering:
+```{r}
+library("factoextra")
+```
+
+How about I isolate my desired variables...
+```{r}
+forjustice <- eardata[,c(3,4,5,6,7,8)] # state abbrev and justice indeces
+```
+
+You can compute and visualize PAM clustering as follow:
+```{r}
+# Compute PAM
+library(cluster)
+pam.res <- pam(forjustice, 4)
+# Visualize
+fviz_cluster(pam.res)
+
+```
+
+Let's do this for pregnancy health!
+```{r}
+forpreg <- eardata[,c(1, 9, 10, 11, 12, 13, 14, 20, 21)] # state abbrev and pregnancy health indicators
+```
+
+You can compute and visualize PAM clustering as follow:
+```{r}
+# Compute PAM
+library(cluster)
+pam.res <- pam(forpreg, 4)
+# Visualize
+fviz_cluster(pam.res)
+
+```
+
+How about gini by region?
+```{r}
+forgini <- eardata[,c(17, 18)] # gini group and region
+```
+
+You can compute and visualize PAM clustering as follow:
+```{r}
+# Compute PAM
+library(cluster)
+pam.res <- pam(forgini, 10)
+# Visualize
+fviz_cluster(pam.res)
+
+```
