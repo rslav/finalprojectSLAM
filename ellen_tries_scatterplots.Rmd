@@ -8,7 +8,6 @@ eardata<- read.csv(eardatalink)
 
 # View the first 5 rows
 head(eardata, n = 5)
-
 ```
 
 ```{r}
@@ -21,42 +20,61 @@ Justice (y) by Pregnancy Health (x)
 ggplot(eardata, aes(x=PHI, y=JusticeIndex)) + geom_point()
 
 # Add the regression line
-ggplot(eardata, aes(x=PHI, y=JusticeIndex)) + geom_point()+
+a=ggplot(eardata, aes(x=PHI, y=JusticeIndex)) + geom_point()+
   geom_smooth(method=lm) + labs(title = 'Justice by Pregnancy Health') + labs(x="Pregnancy Health", y="Justice") + theme_classic()
 ```
 
 Gini (y) by Pregnancy Health (x)
 ```{r}
 # With the regression line
-ggplot(eardata, aes(x=PHI, y=Gini)) + geom_point()+
-  geom_smooth(method=lm) + labs(title = 'Pregnancy Health by Inequality') + labs(title = 'Justice by Pregnancy Health') + labs(x="Pregnancy Health", y="Inequality") + theme_classic()
+b=ggplot(eardata, aes(x=PHI, y=Gini)) + geom_point()+
+  geom_smooth(method=lm) + labs(title = 'Pregnancy Health by Inequality') + labs(x="Pregnancy Health", y="Inequality") + theme_classic()
 ```
 
 Gini (y) by Justice (x)
 ```{r}
 # With the regression line
-ggplot(eardata, aes(x=JusticeIndex, y=Gini)) + geom_point()+
-  geom_smooth(method=lm) + labs(title = 'Justice by Inequality') + labs(title = 'Justice by Pregnancy Health') + labs(x="Justice", y="Inequality") + theme_classic()
+c=ggplot(eardata, aes(x=JusticeIndex, y=Gini)) + geom_point()+
+  geom_smooth(method=lm) + labs(title = 'Justice by Inequality') + labs(x="Justice", y="Inequality") + theme_classic()
 ```
 
 Dependency Score (y) by Justice (x)
 ```{r}
 # With the regression line
-ggplot(eardata, aes(x=JusticeIndex, y=DependencyScore)) + geom_point()+
-  geom_smooth(method=lm) + labs(title = 'Federal Dependency by Justice') + labs(title = 'Justice by Pregnancy Health') + labs(x="Justice", y="Dependency") + theme_classic()
+d=ggplot(eardata, aes(x=JusticeIndex, y=DependencyScore)) + geom_point()+
+  geom_smooth(method=lm) + labs(title = 'Federal Dependency by Justice') + labs(x="Justice", y="Dependency") + theme_classic()
 ```
 
 Dependency Score (y) by Pregnancy Health (x)
 ```{r}
 # With the regression line
-ggplot(eardata, aes(x=PHI, y=DependencyScore)) + geom_point()+
-  geom_smooth(method=lm) + labs(title = 'Federal Dependency by Pregnancy Health') + labs(title = 'Justice by Pregnancy Health') + labs(x="Pregancy Health", y="Dependency") + theme_classic()
+e=ggplot(eardata, aes(x=PHI, y=DependencyScore)) + geom_point()+
+  geom_smooth(method=lm) + labs(title = 'Federal Dependency by Pregnancy Health') + labs(x="Pregancy Health", y="Dependency") + theme_classic()
 ```
 
 Dependency Score (y) by Gini (x)
 ```{r}
 # With the regression line
-ggplot(eardata, aes(x=Gini, y=DependencyScore)) + geom_point()+
-  geom_smooth(method=lm)+ labs(title = 'Federal Dependency by Inequality') + labs(title = 'Justice by Pregnancy Health') + labs(x="Ineqaulity", y="Dependency") + theme_classic()
+f=ggplot(eardata, aes(x=Gini, y=DependencyScore)) + geom_point()+
+  geom_smooth(method=lm)+ labs(title = 'Federal Dependency by Inequality') + labs(x="Ineqaulity", y="Dependency") + theme_classic()
 ```
 
+Let's arrange a multi visualizaztion
+```{r}
+library(ggpubr)
+
+multireg = ggarrange(a,b,c,d,e,f,ncol = 3,nrow = 2)
+
+multireg2 = annotate_figure(multireg,
+                            top = text_grob("Trends Among Indices",
+                                            face = "bold", size = 16),
+                            bottom = text_grob("Data source: one million",
+                                               hjust = 1, x = 1,
+                                               face = "italic",
+                                               size = 10),
+                            left = 'Density',
+                            right = NULL)
+
+
+multireg2
+```

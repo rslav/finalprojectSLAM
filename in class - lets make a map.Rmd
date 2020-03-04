@@ -1,0 +1,59 @@
+
+
+```{r}
+maplink="https://raw.githubusercontent.com/ellenmw/spatialdata/master/cb_2018_us_region_500k.json"
+```
+
+```{r}
+install.packages(c("geojsonio", "lwgeom", "rmapshaper", "tmap", "tmaptools"))
+```
+
+```{r}
+library(geojsonio)
+PROJmap="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+wazipMap=topojson_read(maplink,crs=PROJmap,stringsAsFactors = FALSE)
+```
+
+```{r}
+object.size(wazipMap)
+```
+
+```{r}
+library(lwgeom)
+wazipMap=st_make_valid(wazipMap)
+```
+
+```{r}
+object.size(wazipMap)
+```
+
+```{r}
+library(ggplot2)
+baseMap=ggplot(data=wazipMap) + geom_sf()
+baseMap
+```
+
+```{r}
+# Load data
+eardatalink = "https://raw.githubusercontent.com/rslav/finalprojectSLAM/master/eardata.csv"
+eardata<- read.csv(eardatalink)
+data<- as.data.frame(eardata)
+```
+
+Preparing data merge by renaming merge variable to match my data:
+```{r}
+colnames(wazipMap)[5] <- "Region"
+```
+
+Now merge the map data to our data:
+```{r}
+# put map first:
+# merge two data frames by ID
+total <- merge(wazipMap,data,by="Region")
+```
+
+```{r}
+newMap=ggplot(data=total) + geom_sf() + geom_text(data=total, aes(x,y,label=Region))
+newMap
+```
+
