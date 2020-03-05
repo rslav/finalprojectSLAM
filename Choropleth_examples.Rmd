@@ -13,6 +13,8 @@ library(ggpubr)
 
 data<-read.csv("/Users/Alex/Documents/GitHub/finalprojectSLAM/eardata.csv")
 
+#USE COLOR BREWER (yellow to purple is nice)
+
 colnames(data)[2] <- "state"
 
 ginimap<-plot_usmap(data = data, values = "Gini", color = "gray") + 

@@ -1,0 +1,2 @@
+"0","library(lwgeom)"
+"0","wazipMap=st_make_valid(wazipMap)"
