@@ -1,0 +1,121 @@
+```{r}
+#Rose's code for showing density plots and categorical lolliplots
+
+#Step 1, bring in the data, create data frame
+data <- read.csv("eardata.csv")
+data <- as.data.frame(data)
+
+#Step 2, create density plots for indicies with median line
+library(ggplot2)
+Ginibase=ggplot(data,aes(x = Gini))+stat_density(geom = "line")+theme_classic()+labs(x='Inequality', y= NULL)+geom_vline(aes(xintercept=median(Gini)),
+            color="gray", linetype="dashed", size=.5)
+
+Justicebase=ggplot(data,aes(x = JusticeIndex))+stat_density(geom = "line")+theme_classic()+labs(x='Justice', y= NULL)+geom_vline(aes(xintercept=median(JusticeIndex)),
+            color="gray", linetype="dashed", size=.5)
+
+PHIbase=ggplot(data,aes(x = PHI))+stat_density(geom = "line")+theme_classic()+labs(x='Pregnancy Health', y= NULL)+geom_vline(aes(xintercept=median(PHI)),
+            color="gray", linetype="dashed", size=.5)
+
+Dependencybase=ggplot(data,aes(x=DependencyScore))+stat_density(geom = "line")+theme_classic()+labs(x='Federal Dependency', y=NULL)+geom_vline(aes(xintercept=median(DependencyScore)),
+            color="gray", linetype="dashed", size=.5)
+
+#Combining into one plot
+library(ggpubr)
+
+DensityAll <-ggarrange(Ginibase,Justicebase,PHIbase,Dependencybase, ncol = 1,nrow = 4)
+
+DensityAll2 = annotate_figure(DensityAll,
+                            top = text_grob("Distribution of Indicies: Positive Skew for Justice, Pregnancy Health, and Federal Dependency",
+                                            face = "bold", size = 11),
+                            bottom = text_grob("Sources: ACS, 2010; National Center for Access to Justice, 2016; CDC, 2017; Guttmacher Institute, 2014; FEDERAL DEPENDENCY SOURCE", 
+                                               hjust = 1, x = 1,
+                                               face = "italic", 
+                                               size = 8),
+                            left = 'Density',
+                            right = NULL)
+
+DensityAll2
+
+#Step 4, create lolliplots comparing Inequality and Pregnancy Health (most intersting comparisson)
+
+#Create data frame - Inequality
+summary(data$Gini)
+data$GiniGroup =cut(data$Gini,
+                          breaks = c(0.4,0.452,0.4673,0.4789,0.53),
+                          #labels = c("1st Quartile","2nd Quartile","3rd Quartile", "4th Quartile"))
+                          labels = c("Low"," ","  ","High"))
+
+#marginal data frame - Inequality 
+(GiniRegion=table(data$GiniGroup,data$Region))
+
+GiniRegion_mgcol=prop.table(GiniRegion,
+                              margin = 2)
+
+GiniRegion_df<-as.data.frame(GiniRegion)
+names(GiniRegion_df)
+names(GiniRegion_df)<-c("GiniGroup","Region","Count")
+
+GiniRegion_df$pctCol=as.data.frame(GiniRegion_mgcol)[,3]
+head(GiniRegion_df)
+
+#Create data frame - Pregnancy Health
+summary(data$PHI)
+data$PHIGroup =cut(data$PHI,
+                          breaks = c(0.17,0.2062,0.2273,0.2541,0.33),
+                          #labels = c("1st Quartile","2nd Quartile","3rd Quartile", "4th Quartile"))
+                          labels = c("Low"," ","  ", "High"))
+
+#marginal data frame - Pregnancy Health
+(PHIRegion=table(data$PHIGroup,data$Region))
+
+PHIRegion_mgcol=prop.table(PHIRegion,
+                              margin = 2)
+
+PHIRegion_df<-as.data.frame(PHIRegion)
+names(PHIRegion_df)
+names(PHIRegion_df)<-c("PHIGroup","Region","Count")
+
+PHIRegion_df$pctCol=as.data.frame(PHIRegion_mgcol)[,3]
+head(PHIRegion_df)
+
+#Create lolliplot - Inequality
+lolliplotGini = 
+  ggplot(GiniRegion_df, 
+                 aes(x = GiniGroup,
+                     y = pctCol) ) + 
+  geom_segment(aes(y = 0,
+                   x = GiniGroup,  
+                   yend = pctCol, #ends at the pct value
+                   xend = GiniGroup)) + facet_grid( ~ Region) +
+  geom_point()+theme_bw()+
+  labs(y= "Inequality", 
+       x=NULL)+ylim(0, .9)
+
+#Create lolloplot - Pregnancy Health
+lolliplotPHI = 
+  ggplot(PHIRegion_df, 
+                 aes(x = PHIGroup,
+                     y = pctCol) ) + 
+  geom_segment(aes(y = 0,
+                   x = PHIGroup,  
+                   yend = pctCol, #ends at the pct value
+                   xend = PHIGroup)) + facet_grid( ~ Region) +
+  geom_point()+theme_bw()+
+  labs(y= "Pregnancy Health", 
+       x=NULL)+ylim(0, .9)
+
+#Group and label two plots
+LolliAll_1 <-ggarrange(lolliplotGini,lolliplotPHI, ncol = 1,nrow = 2)
+
+LolliAll_2= annotate_figure (LolliAll_1,
+                            top = text_grob("Pregnancy Health Best in Northeast, High Inequality and Low Pregnancy Health in South",
+                                            face = "bold", size = 11),
+                            bottom = text_grob("Sources: ACS, 2010; CDC, 2017; Guttmacher Institute, 2014", 
+                                               hjust = 1, x = 1,
+                                               face = "italic", 
+                                               size = 8))
+
+LolliAll_2
+
+```
+
