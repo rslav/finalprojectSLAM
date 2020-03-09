@@ -13,7 +13,7 @@ library(ggplot2)
 
 Health by Justice
 ```{r}
-# Add the regression line
+# With the regression line
 a=ggplot(eardata, aes(x=JusticeIndex, y=PHI)) + geom_point()+
   geom_smooth(method=lm) + labs(x="Justice", y="Pregnancy Health") + theme_classic()
 ```
@@ -25,48 +25,30 @@ b=ggplot(eardata, aes(x=JusticeIndex, y=Gini)) + geom_point()+
   geom_smooth(method=lm) + labs(x="Justice", y="Inequality") + theme_classic()
 ```
 
-Dependency by Justice
-```{r}
-# With the regression line
-c=ggplot(eardata, aes(x=JusticeIndex, y=DependencyScore)) + geom_point()+
-  geom_smooth(method=lm) + labs(x="Justice", y="Dependency") + theme_classic()
-```
-
 Health by Inequality
 ```{r}
 # With the regression line
-d=ggplot(eardata, aes(x=Gini, y=PHI)) + geom_point()+
+c=ggplot(eardata, aes(x=Gini, y=PHI)) + geom_point()+
   geom_smooth(method=lm) + labs(x="Inequality", y="Pregnancy Health") + theme_classic()
-```
-
-Dependency by Health
-```{r}
-# With the regression line
-e=ggplot(eardata, aes(x=PHI, y=DependencyScore)) + geom_point()+
-  geom_smooth(method=lm) + labs(x="Health", y="Dependency") + theme_classic()
-```
-
-Dependency by Inequality
-```{r}
-# With the regression line
-f=ggplot(eardata, aes(x=Gini, y=DependencyScore)) + geom_point()+
-  geom_smooth(method=lm) + labs(x="Inequality", y="Dependency") + theme_classic()
 ```
 
 Let's arrange a multi visualizaztion
 ```{r}
 library(ggpubr)
 
-multireg = ggarrange(a,b,c,d,e,f,ncol = 3,nrow = 2)
+multireg = ggarrange(a,b,c,ncol = 3,nrow = 1)
 
+title <- expression(atop(bold("Trends by Indices"), scriptstyle("text")))
 multireg2 = annotate_figure(multireg,
-                            top = text_grob("Trends Among Indices",
+                            top = text_grob(title,
                                             face = "bold", size = 16),
-                            bottom = text_grob("Data sources: one million",
+                            bottom = text_grob("Data sources: See",
                                                hjust = 1, x = 1,
                                                face = "italic",
                                                size = 10),
                             left = 'Density',
                             right = NULL)
+
+
 multireg2
 ```

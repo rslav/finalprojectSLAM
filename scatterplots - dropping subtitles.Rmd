@@ -13,7 +13,7 @@ library(ggplot2)
 
 Health by Justice
 ```{r}
-# Add the regression line
+# With the regression line
 a=ggplot(eardata, aes(x=JusticeIndex, y=PHI)) + geom_point()+
   geom_smooth(method=lm) + labs(x="Justice", y="Pregnancy Health") + theme_classic()
 ```
@@ -59,14 +59,17 @@ library(ggpubr)
 
 multireg = ggarrange(a,b,c,d,e,f,ncol = 3,nrow = 2)
 
+title <- expression(atop(bold("Trends by Indices"), scriptstyle("text")))
 multireg2 = annotate_figure(multireg,
-                            top = text_grob("Trends Among Indices",
+                            top = text_grob(title,
                                             face = "bold", size = 16),
-                            bottom = text_grob("Data sources: one million",
+                            bottom = text_grob("Data sources: The Justice Index, The Gini Index, CDC Wonder, ...",
                                                hjust = 1, x = 1,
                                                face = "italic",
                                                size = 10),
                             left = 'Density',
                             right = NULL)
+
+
 multireg2
 ```
