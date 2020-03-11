@@ -371,16 +371,16 @@ finalsupermapalaska
 supermap <-
   ggdraw() +
   draw_plot(finalsupermapcontinental) +
-  draw_plot(finalsupermaphawaii, x = 0.01, y = .2, width = .3, height = .3) +
-  draw_plot(finalsupermapalaska, x = 0.05, y = .1, width = .4, height = .4)
+  draw_plot(finalsupermaphawaii, x = 0.15, y = .17, width = .3, height = .3) +
+  draw_plot(finalsupermapalaska, x = 0.00, y = .1, width = .45, height = .45)
 
 depmap <-
   ggdraw() +
   draw_plot(finaldepmapcontinental) +
-  draw_plot(finaldepmaphawaii, x = 0.00, y = .2, width = .2, height = .2) +
-  draw_plot(finaldepmapalaska, x = 0.1, y = .1, width = .3, height = .3)
+  draw_plot(finaldepmaphawaii,x = 0.15, y = .17, width = .3, height = .3) +
+  draw_plot(finaldepmapalaska, x = 0.00, y = .1, width = .45, height = .45)
 
-plot_grid(supermap, depmap, nrow = 2)
+stackmap<-plot_grid(supermap, depmap, nrow = 2)
 
 ```
 

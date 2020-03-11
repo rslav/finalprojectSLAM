@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1583967954732.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3762510826",
+    "id" : "6981787C",
+    "lastKnownWriteTime" : 1583969465,
+    "last_content_update" : 1583969465843,
+    "path" : "~/Documents/GitHub/finalprojectSLAM/GGplotters_final_presentation.Rmd",
+    "project_path" : "GGplotters_final_presentation.Rmd",
+    "properties" : {
+        "cursorPosition" : "480,8",
+        "scrollLine" : "459"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
