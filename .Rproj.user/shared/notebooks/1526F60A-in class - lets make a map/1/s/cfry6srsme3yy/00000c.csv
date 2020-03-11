@@ -1,5 +1,0 @@
-"0",""
-"0","library(ggplot2)"
-"0","baseMap=ggplot(data=wazipMap) + geom_sf()"
-"0","baseMap"
-"0",""

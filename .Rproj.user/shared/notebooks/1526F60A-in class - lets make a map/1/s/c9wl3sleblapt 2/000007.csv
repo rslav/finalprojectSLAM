@@ -1,0 +1,12 @@
+"0","g<- c(finalsupermapalaska,finalsupermaphawaii,finalsupermapcontinental, 
+            finaldepmapalaska, finaldepmaphawaii,  finaldepmapcontinental)
+
+grid.arrange(
+  grobs=g,
+  widths = c(2, 1, 1),
+  layout_matrix = rbind(c(1, 2, NA),
+                        c(3, 3, 4))
+)
+"
+"2","Error in t:b : NA/NaN argument
+"

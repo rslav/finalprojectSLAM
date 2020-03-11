@@ -13,7 +13,7 @@ library(ggpubr)
 
 data<-read.csv("/Users/Alex/Documents/GitHub/finalprojectSLAM/eardata.csv")
 
-#USE COLOR BREWER (yellow to purple is nice)
+#USE COLOR BREWER (yellow to navy is nice) YlGnbU
 
 colnames(data)[2] <- "state"
 
