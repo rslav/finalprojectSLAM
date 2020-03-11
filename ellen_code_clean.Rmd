@@ -1,6 +1,5 @@
 Scatterplots with Regression Lines
 
-
 ```{r}
 # Load data
 eardatalink = "https://raw.githubusercontent.com/rslav/finalprojectSLAM/master/eardata.csv"
@@ -13,23 +12,20 @@ library(ggplot2)
 
 Health by Justice
 ```{r}
-# With the regression line
 a=ggplot(eardata, aes(x=JusticeIndex, y=PHI)) + geom_point()+
   geom_smooth(method=lm) + labs(x="Justice", y="Pregnancy Health") + theme_classic()
 ```
 
-Inequality by Justice
-```{r}
-# With the regression line
-b=ggplot(eardata, aes(x=JusticeIndex, y=Gini)) + geom_point()+
-  geom_smooth(method=lm) + labs(x="Justice", y="Inequality") + theme_classic()
-```
-
 Health by Inequality
 ```{r}
-# With the regression line
-c=ggplot(eardata, aes(x=Gini, y=PHI)) + geom_point()+
+b=ggplot(eardata, aes(x=Gini, y=PHI)) + geom_point()+
   geom_smooth(method=lm) + labs(x="Inequality", y="Pregnancy Health") + theme_classic()
+```
+
+Inequality by Justice
+```{r}
+c=ggplot(eardata, aes(x=JusticeIndex, y=Gini)) + geom_point()+
+  geom_smooth(method=lm) + labs(x="Justice", y="Inequality") + theme_classic()
 ```
 
 Let's arrange a multi visualizaztion
@@ -38,11 +34,11 @@ library(ggpubr)
 
 multireg = ggarrange(a,b,c,ncol = 3,nrow = 1)
 
-title <- expression(atop(bold("Trends by Indices"), scriptstyle("text")))
+title <- expression(atop(bold("Trends by Indices"), scriptstyle("Note: pregnancy health increases with justice and decreases with higher inequality")))
 multireg2 = annotate_figure(multireg,
                             top = text_grob(title,
                                             face = "bold", size = 16),
-                            bottom = text_grob("Data sources: See",
+                            bottom = text_grob("Sources: ACS, 2010; National Center for Access to Justice, 2016; CDC, 2017; Guttmacher Institute, 2014",
                                                hjust = 1, x = 1,
                                                face = "italic",
                                                size = 10),
