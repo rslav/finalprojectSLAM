@@ -1,0 +1,6 @@
+"0",""
+"0",""
+"0","# Load data"
+"0","eardatalink = ""https://raw.githubusercontent.com/rslav/finalprojectSLAM/master/eardata.csv"""
+"0","eardata<- read.csv(eardatalink)"
+"0","data<- as.data.frame(eardata)"

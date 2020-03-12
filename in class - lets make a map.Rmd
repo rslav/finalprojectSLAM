@@ -380,7 +380,7 @@ depmap <-
   draw_plot(finaldepmaphawaii,x = 0.15, y = .17, width = .3, height = .3) +
   draw_plot(finaldepmapalaska, x = 0.00, y = .1, width = .45, height = .45)
 
-plot_grid(supermap, depmap, nrow = 2)
+stackmap<-plot_grid(supermap, depmap, nrow = 2)
 
 ```
 

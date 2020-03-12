@@ -2,18 +2,18 @@
     "collab_server" : "",
     "contents" : "",
     "created" : 1583366010879.000,
-    "dirty" : true,
+    "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
     "id" : "9BD2A8A7",
-    "lastKnownWriteTime" : 1583890428,
-    "last_content_update" : 1583893542360,
+    "lastKnownWriteTime" : 1583976806,
+    "last_content_update" : 1583976806465,
     "path" : "~/Documents/GitHub/finalprojectSLAM/in class - lets make a map.Rmd",
     "project_path" : "in class - lets make a map.Rmd",
     "properties" : {
         "cursorPosition" : "117,3",
-        "scrollLine" : "100"
+        "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [

@@ -68,24 +68,34 @@ DensityAll2
 
 ---
 
-```{r, echo=FALSE, results='hide'}
+```{r, echo=FALSE, results='hide', fig.width=6.5,fig.height=5.5}
 
 a=ggplot(data, aes(x=JusticeIndex, y=PHI)) + geom_point()+
-  geom_smooth(method=lm, color="#67a9cf") + labs(x="Justice", y="Pregnancy Health") + theme_classic()
+  geom_smooth(method=lm, se=F, color="#67a9cf") + labs(x="Justice", y="Pregnancy Health") + theme_classic()
 
 b=ggplot(data, aes(x=Gini, y=PHI)) + geom_point()+
-  geom_smooth(method=lm, color="#67a9cf") + labs(x="Inequality", y="Pregnancy Health") + theme_classic()
+  geom_smooth(method=lm, se=F, color="#67a9cf") + labs(x="Inequality", y="Pregnancy Health") + theme_classic()
 
 c=ggplot(data, aes(x=JusticeIndex, y=Gini)) + geom_point()+
-  geom_smooth(method=lm, color="#67a9cf") + labs(x="Justice", y="Inequality") + theme_classic()
+  geom_smooth(method=lm, se=F, color="#67a9cf") + labs(x="Justice", y="Inequality") + theme_classic()
 
 library(ggpubr)
 
-multireg = ggarrange(a,b,c,ncol = 3,nrow = 1)
+multi1 = ggarrange(a,c,ncol = 2,nrow = 1)
+
+multi2 = ggarrange(multi1,b, 
+                   ncol=1, 
+                   nrow = 2, 
+                   widths = c(5, 1))
+'
+multi2
+'
+multi3 = ggarrange(a,c,b, ncol=1, nrow=3, align =c("h"), widths=3)
+
 
 
 title <- expression(atop(bold("Pregnancy Health is Correlated Positively with Justice and Negatively with Inequality")))
-multireg2 = annotate_figure(multireg,
+multireg2 = annotate_figure(multi3,
                             top = text_grob(title,
                                             face = "bold", size = 11),
                             bottom = text_grob("Sources: ACS, 2010; National Center for Access to Justice, 2016; CDC, 2017; Guttmacher Institute, 2014",
@@ -283,14 +293,23 @@ summary(total$superindex)
 ```{r include=FALSE, results='hide'}
 total$superindexhighlow =cut(total$superindex,
                           breaks = c(-0.47584,0.18394,1.04287),
-                          labels = c("Low","High"))
+                          labels = c("Worse","Better"))
 
 summary(total$superindexhighlow)
 
 summary(total$DependencyScore)
 total$federaldependencyhighlow = cut(total$DependencyScore, 
                                breaks = c(10.6,37.77,85.82),
-                               labels = c("Low","High"))
+                               labels = c("Better","Worse"))
+
+summary(total$federaldependencyhighlow)
+summary(total$superindexhighlow)
+
+total$goodbad <- ifelse(total$federaldependencyhighlow == "Worse" & total$superindexhighlow == "Worse", "Worse", ifelse(total$federaldependencyhighlow == "Better" & total$superindexhighlow == "Better", "Better", "Mixed"))
+
+summary(total$goodbad)
+total$goodbad
+
 ```
 
 ```{r include=FALSE, results='hide'}
@@ -470,8 +489,99 @@ finalsupermapalaska=
 finalsupermapalaska
 ```
 
+```{r include=FALSE, results='hide'}
 
-```{r, echo=FALSE, results='hide'}
+goodbadmapall=
+  ggplot(total) + 
+  geom_sf(aes(fill=goodbad)) +
+    coord_sf(xlim = c(-170, -68), 
+             ylim = c(19, 70)) +
+    theme_classic() +
+  scale_fill_manual(values = c("#67a9cf","white", "#ef8a62" ), 
+                    name= "Overall Performance")+ 
+  theme(axis.line=element_blank(),
+        axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        panel.background=element_blank(),
+        panel.border=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        plot.background=element_blank())
+goodbadmapall
+
+goodbadmapcontinental=
+  ggplot(total) + 
+  geom_sf(aes(fill=goodbad)) +
+  coord_sf(xlim = c(-126, -68), 
+          ylim = c(19, 50)) +
+    theme_classic() +
+  scale_fill_manual(values = c("#67a9cf","white", "#ef8a62" ), 
+                    name= "Overall Performance")+ 
+  theme(axis.line=element_blank(),
+        axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        panel.background=element_blank(),
+        panel.border=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        plot.background=element_blank())
+goodbadmapcontinental
+
+goodbadmaphawaii=
+  ggplot(total) + 
+  geom_sf(aes(fill=goodbad)) +
+  coord_sf(xlim = c(-160, -155), 
+          ylim = c(18, 23)) +
+    theme_classic() +
+  scale_fill_manual(values = c("#67a9cf","white", "#ef8a62" ), 
+                    name= "Overall Performance")+ 
+  theme(axis.line=element_blank(),
+        axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        panel.background=element_blank(),
+        panel.border=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        plot.background=element_blank(), 
+        legend.position = "none")
+goodbadmaphawaii
+
+goodbadmapalaska=
+  ggplot(total) + 
+  geom_sf(aes(fill=goodbad)) +
+  coord_sf(xlim = c(-170, -135), 
+          ylim = c(51, 75)) +
+    theme_classic() +
+  scale_fill_manual(values = c("#67a9cf","white", "#ef8a62" ), 
+                    name= "Overall Performance")+ 
+  theme(axis.line=element_blank(),
+        axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        panel.background=element_blank(),
+        panel.border=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        plot.background=element_blank(), 
+        legend.position = "none")
+goodbadmapalaska
+
+```
+
+
+
+```{r, echo=FALSE, results='hide', fig.width=6.5,fig.height=5.5}
 
 supermap <-
   ggdraw() +
@@ -485,7 +595,14 @@ depmap <-
   draw_plot(finaldepmaphawaii,x = 0.15, y = .17, width = .3, height = .3) +
   draw_plot(finaldepmapalaska, x = 0.00, y = .1, width = .45, height = .45)
 
-stackmap<-plot_grid(supermap, depmap, nrow = 2)
+goodbadmap <-
+  ggdraw() +
+  draw_plot(goodbadmapcontinental) +
+  draw_plot(goodbadmaphawaii,x = 0.15, y = .17, width = .3, height = .3) +
+  draw_plot(goodbadmapalaska, x = 0.00, y = .1, width = .45, height = .45)
+
+
+stackmap<-plot_grid(supermap, depmap, goodbadmap, nrow = 3)
 
 stackmap_labeled= annotate_figure (stackmap,
                             top = text_grob("Poor Outcomes in the South; California-Michigan Band and New England Perform Well",
@@ -505,5 +622,10 @@ stackmap_labeled
 <p>Comparing <b>between states</b>, social outcomes such as pregnancy health and access to justice are positively correlated, and as inequality increases, pregnancy health goes down. Thus, states that tend to value a social outcome like health also tend to value justice and equality.</p>
 <p>At a <b>regional level</b>, the Midwest and the West have mixed outcomes. The Northeast has higher inequality but the best pregnancy health, and the South stands out as a region with poorer social outcomes. </p>
 <p>Comparing the social outcomes together as a <b>“Super-Index”</b>, we see that states in the central band from California to Michigan and the Northeast fare best. This is correlated with low federal dependency in the California-Michigan band. Poor social outcomes and high federal dependency are characteristic for the South.</p>
+
+
+## A Note:
+The South.... has suffered historial structural etc
+
 
 ## Thank you!
