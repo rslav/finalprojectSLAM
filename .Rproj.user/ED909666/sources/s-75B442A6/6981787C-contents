@@ -28,6 +28,8 @@ library(geojsonio)
 library(ggplot2)
 library(gridExtra)
 library(cowplot)
+library(ggpubr)
+
 #Rose's code for showing density plots and categorical lolliplots
 
 #Step 1, bring in the data, create data frame
@@ -35,7 +37,6 @@ data <- read.csv("eardata.csv")
 data <- as.data.frame(data)
 
 #Step 2, create density plots for indicies with median line
-library(ggplot2)
 Ginibase=ggplot(data,aes(x = Gini))+stat_density(geom = "line")+theme_classic()+labs(x='Inequality', y= NULL)+geom_vline(aes(xintercept=median(Gini)),
             color="gray", linetype="dashed", size=.5)
 
@@ -49,7 +50,6 @@ Dependencybase=ggplot(data,aes(x=DependencyScore))+stat_density(geom = "line")+t
             color="gray", linetype="dashed", size=.5)
 
 #Combining into one plot
-library(ggpubr)
 
 DensityAll <-ggarrange(Ginibase,Justicebase,PHIbase,Dependencybase, ncol = 1,nrow = 4)
 
@@ -78,8 +78,6 @@ b=ggplot(data, aes(x=Gini, y=PHI)) + geom_point()+
 
 c=ggplot(data, aes(x=JusticeIndex, y=Gini)) + geom_point()+
   geom_smooth(method=lm, se=F, color="#67a9cf") + labs(x="Justice", y="Inequality") + theme_classic()
-
-library(ggpubr)
 
 multi1 = ggarrange(a,c,ncol = 2,nrow = 1)
 
@@ -112,7 +110,7 @@ multireg2
 ---
 
 ```{r, echo=FALSE, results='hide'}
-#Step 4, create lolliplots comparing Inequality and Pregnancy Health (most intersting comparisson)
+#Step 4, create lolliplots comparing Inequality and Pregnancy Health (most intersting comparisons)
 
 #Create data frame - Inequality
 summary(data$Gini)
@@ -199,12 +197,12 @@ LolliAll_2
 
 
 ```{r include=FALSE, results='hide'}
+# Bring in a GEOJSON of the US's 50 states
 
 PROJmap="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
 maplink= "https://raw.githubusercontent.com/rslav/finalprojectSLAM/master/cb_2018_us_state_20m.json"
 
 wazipMap=topojson_read(maplink,crs=PROJmap,stringsAsFactors = FALSE)
-
 
 wazipMap
 
@@ -213,13 +211,14 @@ baseMap=ggplot(data=wazipMap) + geom_sf()
 baseMap
 
 
-# Load data
+# Load project data by state 
 eardatalink = "https://raw.githubusercontent.com/rslav/finalprojectSLAM/master/eardata.csv"
 eardata<- read.csv(eardatalink)
 data<- as.data.frame(eardata)
 ```
 
 ```{r include=FALSE, results='hide'}
+#prepare for an attribute join
 data
 colnames(data)[2] <- "NAME"
 ```
@@ -233,7 +232,7 @@ total
 ```
 
 ```{r include=FALSE, results='hide'}
-#create super index
+#create super index by normalizing, getting on a 0-1 scale, and combining all 3 variables of interest
 
 summary(total$JusticeIndex)
 #divide by 100 to get on a 0-1 scale
@@ -285,12 +284,18 @@ total$newphi <-(total$newphi+1.5535638)
 #0-1 scale
 total$newphi <-(total$newphi/5)
 
+
+#CREATE SUPER INDEX
+
 total$superindex<- total$newphi+total$newjustice-total$newgini
 summary(total$superindex)
 ```
 
 
 ```{r include=FALSE, results='hide'}
+
+# cut the index and the federal dependency and the combination of both into "better and worse" groups
+
 total$superindexhighlow =cut(total$superindex,
                           breaks = c(-0.47584,0.18394,1.04287),
                           labels = c("Worse","Better"))
@@ -305,6 +310,8 @@ total$federaldependencyhighlow = cut(total$DependencyScore,
 summary(total$federaldependencyhighlow)
 summary(total$superindexhighlow)
 
+# create a combination of super index and federal dependency for the map: better, worse, and mixed
+
 total$goodbad <- ifelse(total$federaldependencyhighlow == "Worse" & total$superindexhighlow == "Worse", "Worse", ifelse(total$federaldependencyhighlow == "Better" & total$superindexhighlow == "Better", "Better", "Mixed"))
 
 summary(total$goodbad)
@@ -313,6 +320,7 @@ total$goodbad
 ```
 
 ```{r include=FALSE, results='hide'}
+# THIS CHUNK MAKES 4 MAPS OF FEDERAL DEPENDENCY RESULTS: ALL OF THE USA, ONLY THE CONTINENTAL USA, ALASKA, AND HAWAII
 finaldepmapall=
   ggplot(total) + 
   geom_sf(aes(fill=federaldependencyhighlow)) +
@@ -402,6 +410,8 @@ finaldepmapalaska
 
 
 ```{r include=FALSE, results='hide'}
+# THIS CHUNK MAKES 4 MAPS OF SUPER INDEX RESULTS: ALL OF THE USA, ONLY THE CONTINENTAL USA, ALASKA, AND HAWAII
+
 finalsupermapall=
   ggplot(total) + 
   geom_sf(aes(fill=superindexhighlow)) +
@@ -490,6 +500,7 @@ finalsupermapalaska
 ```
 
 ```{r include=FALSE, results='hide'}
+# THIS CHUNK MAKES 4 MAPS OF SUPER INDEX + FEDERAL DEPENDENCY RESULTS: ALL OF THE USA, ONLY THE CONTINENTAL USA, ALASKA, AND HAWAII
 
 goodbadmapall=
   ggplot(total) + 
@@ -582,6 +593,7 @@ goodbadmapalaska
 
 
 ```{r, echo=FALSE, results='hide', fig.width=6.5,fig.height=5.5}
+# THIS CHUNK COMBINES CONTINENTAL USA, ALASKA, AND HAWAII MAPS FOR EACH VARIABLE AND CREATES OUR FINAL RESULTS SLIDE
 
 supermap <-
   ggdraw() +
@@ -621,11 +633,11 @@ stackmap_labeled
  
 <p>Comparing <b>between states</b>, social outcomes such as pregnancy health and access to justice are positively correlated, and as inequality increases, pregnancy health goes down. Thus, states that tend to value a social outcome like health also tend to value justice and equality.</p>
 <p>At a <b>regional level</b>, the Midwest and the West have mixed outcomes. The Northeast has higher inequality but the best pregnancy health, and the South stands out as a region with poorer social outcomes. </p>
-<p>Comparing the social outcomes together as a <b>“Super-Index”</b>, we see that states in the central band from California to Michigan and the Northeast fare best. This is correlated with low federal dependency in the California-Michigan band. Poor social outcomes and high federal dependency are characteristic for the South.</p>
+<p>Comparing the social outcomes together as a <b>“Super-Index”</b>, we see that states in the central band from California to Michigan and the Northeast fare best. This is correlated with low federal dependency in the California-Michigan band. Poor social outcomes and high federal dependency are both characteristic for the South.</p>
 
 
 ## A Note:
-The South.... has suffered historial structural etc
 
+<p>Our findings of worse outcomes in the South cannot be considered outside the context of US history. The making of American capitalism and prosperity was based largely on extracting wealth from slave labor in the South through a system of violence and oppression. Slavery enriched the US financial system, was a key driver of national economic growth, and fueled the industrial revolution in the North. Thus, as we compare between regions and states, we acknowledge that these maps tell a deeper story about the legacy of slavery and our racially structured economy and society. At large, the US has yet to transform its institutions in order to provide all Americans with equal access to health care, justice, and other measures of social well-being.</p>
 
 ## Thank you!
