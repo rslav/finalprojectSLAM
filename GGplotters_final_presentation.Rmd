@@ -30,7 +30,7 @@ library(gridExtra)
 library(cowplot)
 library(ggpubr)
 
-#Rose's code for showing density plots and categorical lolliplots
+#Density plots and categorical lolliplots for outcome variables
 
 #Step 1, bring in the data, create data frame
 data <- read.csv("eardata.csv")
